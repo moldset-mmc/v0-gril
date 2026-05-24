@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useLocale } from "./locale-provider"
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const { locale, setLocale, t } = useLocale()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,32 +37,57 @@ export function Navbar() {
         </div>
         <span className="text-xl font-black uppercase tracking-[2px]">Wine & Grill</span>
       </Link>
-      <ul className="hidden sm:flex gap-6 list-none">
-        <li>
-          <Link
-            href="#menu"
-            className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
+      <div className="flex items-center gap-6">
+        <ul className="hidden sm:flex gap-6 list-none">
+          <li>
+            <Link
+              href="#menu"
+              className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
+            >
+              {t.nav.menu}
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#atmosphere"
+              className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
+            >
+              {t.nav.atmosphere}
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="#contact"
+              className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
+            >
+              {t.nav.contacts}
+            </Link>
+          </li>
+        </ul>
+        {/* Language Switcher */}
+        <div className="flex items-center gap-1 bg-white/10 rounded-full p-1">
+          <button
+            onClick={() => setLocale("ru")}
+            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.5px] transition-all ${
+              locale === "ru"
+                ? "bg-[#f5c200] text-[#2c1a0e]"
+                : "text-white/70 hover:text-white"
+            }`}
           >
-            Меню
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="#atmosphere"
-            className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
+            RU
+          </button>
+          <button
+            onClick={() => setLocale("ro")}
+            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-[0.5px] transition-all ${
+              locale === "ro"
+                ? "bg-[#f5c200] text-[#2c1a0e]"
+                : "text-white/70 hover:text-white"
+            }`}
           >
-            Атмосфера
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="#contact"
-            className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
-          >
-            Контакты
-          </Link>
-        </li>
-      </ul>
+            RO
+          </button>
+        </div>
+      </div>
     </nav>
   )
 }

@@ -1,7 +1,12 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { useLocale } from "./locale-provider"
 
 export function Hero() {
+  const { t } = useLocale()
+
   return (
     <section
       id="hero"
@@ -39,20 +44,20 @@ export function Hero() {
           <span className="text-[#f5c200]">Wine</span> & Grill
         </h1>
         <p className="mt-3 text-[clamp(0.95rem,2.5vw,1.3rem)] uppercase tracking-[4px] opacity-75 text-white">
-          Ресторан · Вкус · Атмосфера
+          {t.hero.subtitle}
         </p>
         <div className="mt-10 flex gap-4 justify-center flex-wrap">
           <Link
             href="#menu"
             className="px-9 py-3.5 rounded-full text-base font-bold uppercase tracking-[1px] bg-[#f5c200] text-[#2c1a0e] no-underline transition-all hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
-            Смотреть меню
+            {t.hero.viewMenu}
           </Link>
           <Link
             href="#contact"
             className="px-9 py-3.5 rounded-full text-base font-bold uppercase tracking-[1px] bg-transparent text-white border-2 border-white/50 no-underline transition-all hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)] hover:border-white"
           >
-            Контакты
+            {t.hero.contacts}
           </Link>
         </div>
       </div>
@@ -62,7 +67,7 @@ export function Hero() {
         href="#highlights"
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-1 opacity-60 text-white text-xs tracking-[2px] no-underline animate-bounce-arrow"
       >
-        <span>SCROLL</span>
+        <span>{t.hero.scroll}</span>
         <svg
           viewBox="0 0 24 24"
           fill="none"
