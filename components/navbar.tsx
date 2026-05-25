@@ -28,7 +28,7 @@ export function Navbar() {
       }`}
     >
       <Link href="#hero" className="flex items-center gap-2 text-[#f5c200] no-underline">
-        <div className="w-[38px] h-[38px] rounded-full overflow-hidden border-2 border-[#f5c200]">
+        <div className="w-[38px] h-[38px] rounded-full overflow-hidden border-2 border-[#f5c200] shrink-0">
           <Image
             src="/images/logo.png"
             alt="Wine & Grill"
@@ -37,9 +37,9 @@ export function Navbar() {
             className="w-full h-full object-cover object-[center_5%]"
           />
         </div>
-        <span className="text-xl font-black uppercase tracking-[2px]">Wine & Grill</span>
+        <span className="text-base sm:text-xl font-black uppercase tracking-[1px] sm:tracking-[2px] whitespace-nowrap">Wine & Grill</span>
       </Link>
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-2 sm:gap-6">
         <ul className="hidden sm:flex gap-6 list-none">
           <li>
             <Link

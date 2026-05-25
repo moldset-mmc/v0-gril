@@ -58,7 +58,7 @@ export function Menu() {
               key={item.id}
               className="bg-white border border-black/[0.07] rounded-[18px] overflow-hidden transition-all duration-250 hover:-translate-y-1.5 hover:border-[#f5c200] hover:shadow-[0_12px_40px_rgba(245,194,0,0.15)]"
             >
-              <div className="relative w-full h-[185px]">
+              <div className="relative w-full h-[220px] sm:h-[185px]">
                 {item.image ? (
                   <Image
                     src={item.image}
