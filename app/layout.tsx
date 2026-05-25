@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
+import { LocaleProvider } from '@/components/locale-provider'
+import { CartProvider } from '@/lib/cart-context'
+import { CartSheet } from '@/components/cart-sheet'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -33,7 +36,12 @@ export default function RootLayout({
   return (
     <html lang="ru" className="bg-background">
       <body className="font-sans antialiased overflow-x-hidden">
-        {children}
+        <CartProvider>
+          <LocaleProvider>
+            {children}
+            <CartSheet />
+          </LocaleProvider>
+        </CartProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

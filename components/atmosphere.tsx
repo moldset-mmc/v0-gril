@@ -1,4 +1,7 @@
+"use client"
+
 import Image from "next/image"
+import { useLocale } from "./locale-provider"
 
 const photos = [
   "/images/clatite_branza.jpg",
@@ -12,17 +15,19 @@ const photos = [
 ]
 
 export function Atmosphere() {
+  const { t } = useLocale()
+
   return (
     <section id="atmosphere" className="py-16 bg-white/[0.55] overflow-hidden">
       <div className="text-center px-6 pb-12">
         <span className="inline-block bg-[#f5c200] text-[#2c1a0e] text-xs font-extrabold uppercase tracking-[3px] px-4 py-1 rounded-full mb-3">
-          Атмосфера
+          {t.atmosphere.badge}
         </span>
         <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-black uppercase tracking-[1px] text-[#2c1a0e]">
-          Приходите к нам
+          {t.atmosphere.title}
         </h2>
         <p className="mt-2 opacity-55 text-sm text-[#2c1a0e]">
-          Тёплая обстановка, живое дерево, вкусная еда
+          {t.atmosphere.subtitle}
         </p>
       </div>
 
