@@ -28,7 +28,7 @@ export const translations = {
         },
         {
           title: "Быстро и вкусно",
-          description: "Свежие блюда по доступным ценам от 40 до 95 MDL — для любого случая",
+          description: "Свежие блюда по доступным ценам — для любого случая",
         },
       ],
     },
@@ -134,7 +134,7 @@ export const translations = {
         },
         {
           title: "Rapid și gustos",
-          description: "Mâncăruri proaspete la prețuri accesibile de la 40 la 95 MDL — pentru orice ocazie",
+          description: "Mâncăruri proaspete la prețuri accesibile — pentru orice ocazie",
         },
       ],
     },
