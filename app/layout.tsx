@@ -6,9 +6,9 @@ import { CartSheet } from '@/components/cart-sheet'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Wine & Grill — Ресторан',
-  description: 'Домашняя кухня, хорошее вино и настоящий гриль. Блинчики, вареники, пельмени — блюда как у мамы.',
-  generator: 'v0.app',
+  title: 'Wine & Grill — меню и заказ за столом',
+  description: 'Основные блюда, супы, домашняя кухня, вино и настоящий гриль. Выберите блюда и отправьте заказ прямо со своего стола.',
+  metadataBase: new URL('https://v0-gril.vercel.app'),
   icons: {
     icon: [
       {

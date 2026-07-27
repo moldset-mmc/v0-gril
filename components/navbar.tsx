@@ -69,6 +69,7 @@ export function Navbar() {
         {/* Cart Button */}
         <button
           onClick={() => setIsOpen(true)}
+          aria-label={locale === "ru" ? "Открыть заказ" : "Deschide comanda"}
           className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-[#f5c200] text-[#2c1a0e] font-black text-sm uppercase tracking-[1px] hover:bg-[#e6b800] transition-all hover:-translate-y-0.5"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">

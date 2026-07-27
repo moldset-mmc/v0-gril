@@ -22,6 +22,19 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Orders, QR links and social links
+
+Copy `.env.example` to `.env.local` and fill the Telegram credentials. The bot must be an administrator of the private channel with permission to publish messages.
+
+Supported QR parameters:
+
+- `/?table=7` — opens the menu for table 7;
+- `/?table=7&category=main` — opens the main dishes category;
+- `/?table=7&dish=frigarui-de-porc` — opens and highlights a specific dish;
+- `/?table=7&dish=45` — numeric dish IDs remain supported for previously generated links.
+
+Social and review buttons appear only when their corresponding `NEXT_PUBLIC_*` URLs are configured.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 ## Learn More
