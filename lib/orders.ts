@@ -10,7 +10,6 @@ export interface OrderLine {
 export interface ValidatedOrder {
   idempotencyKey: string
   locale: Locale
-  table: number
   comment: string
   lines: OrderLine[]
   total: number
@@ -33,14 +32,10 @@ export function validateOrder(payload: unknown): ValidationResult {
   if (!isRecord(payload)) return { ok: false, error: "INVALID_PAYLOAD" }
 
   const locale: Locale = payload.locale === "ro" ? "ro" : "ru"
-  const table = Number(payload.table)
   const idempotencyKey =
     typeof payload.idempotencyKey === "string" ? payload.idempotencyKey.trim() : ""
   const comment = typeof payload.comment === "string" ? payload.comment.trim() : ""
 
-  if (!Number.isInteger(table) || table < 1 || table > 99) {
-    return { ok: false, error: "INVALID_TABLE" }
-  }
   if (idempotencyKey.length < 8 || idempotencyKey.length > 100) {
     return { ok: false, error: "INVALID_KEY" }
   }
@@ -93,7 +88,6 @@ export function validateOrder(payload: unknown): ValidationResult {
     order: {
       idempotencyKey,
       locale,
-      table,
       comment,
       lines,
       total: lines.reduce((sum, line) => sum + line.subtotal, 0),
@@ -145,7 +139,6 @@ export function formatTelegramOrder(orderId: string, order: ValidatedOrder) {
   return [
     `🆕 <b>Новый заказ #${escapeHtml(orderId)}</b>`,
     "",
-    `🪑 Стол: <b>${order.table}</b>`,
     `🕒 Время: ${escapeHtml(time)}`,
     `🌐 Язык: ${order.locale.toUpperCase()}`,
     source ? `📱 Источник: ${source}` : "",

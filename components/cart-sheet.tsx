@@ -12,7 +12,6 @@ interface OrderResponse {
   error?: string
 }
 
-const TABLE_STORAGE_KEY = "wine-grill-table"
 const CHECKOUT_KEY_STORAGE = "wine-grill-checkout-key"
 const CHECKOUT_SIGNATURE_STORAGE = "wine-grill-checkout-signature"
 
@@ -24,11 +23,9 @@ function createIdempotencyKey() {
 export function CartSheet() {
   const { items, removeItem, addItem, clearCart, total, isOpen, setIsOpen } = useCart()
   const { locale, t } = useLocale()
-  const [table, setTable] = useState("")
   const [comment, setComment] = useState("")
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
   const [orderId, setOrderId] = useState("")
-  const [tableError, setTableError] = useState(false)
   const [shareNotice, setShareNotice] = useState(false)
 
   const cartSignature = useMemo(
@@ -44,17 +41,6 @@ export function CartSheet() {
   )
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const qrTable = params.get("table")
-    const savedTable = localStorage.getItem(TABLE_STORAGE_KEY)
-    const initialTable = qrTable && /^\d{1,2}$/.test(qrTable) ? qrTable : savedTable
-    if (initialTable) {
-      setTable(initialTable)
-      localStorage.setItem(TABLE_STORAGE_KEY, initialTable)
-    }
-  }, [])
-
-  useEffect(() => {
     const previousSignature = localStorage.getItem(CHECKOUT_SIGNATURE_STORAGE)
     if (previousSignature === cartSignature) return
     localStorage.setItem(CHECKOUT_SIGNATURE_STORAGE, cartSignature)
@@ -64,23 +50,10 @@ export function CartSheet() {
 
   if (!isOpen) return null
 
-  const updateTable = (value: string) => {
-    const normalized = value.replace(/\D/g, "").slice(0, 2)
-    setTable(normalized)
-    setTableError(false)
-    if (normalized) localStorage.setItem(TABLE_STORAGE_KEY, normalized)
-  }
-
   const submitOrder = async () => {
-    const tableNumber = Number(table)
-    if (!Number.isInteger(tableNumber) || tableNumber < 1 || tableNumber > 99) {
-      setTableError(true)
-      return
-    }
     if (!items.length || status === "sending") return
 
     setStatus("sending")
-    setTableError(false)
 
     try {
       const params = new URLSearchParams(window.location.search)
@@ -96,7 +69,6 @@ export function CartSheet() {
         body: JSON.stringify({
           idempotencyKey,
           locale,
-          table: tableNumber,
           comment,
           items: items.map(({ item, option, quantity }) => ({
             id: item.id,
@@ -188,9 +160,6 @@ export function CartSheet() {
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#2c1a0e] text-white px-4 py-2 text-sm font-bold">
                 {t.order.orderNumber}: <span className="text-[#f5c200]">{orderId}</span>
               </div>
-              <p className="mt-2 text-sm font-bold text-[#2c1a0e]">
-                {t.order.table}: {table}
-              </p>
             </div>
 
             <div className="rounded-2xl bg-[#fff9e9] border border-[#f5c200]/40 px-4 py-2">
@@ -316,22 +285,6 @@ export function CartSheet() {
 
               {items.length > 0 && (
                 <div className="mt-4 space-y-4">
-                  <label className="block">
-                    <span className="block text-xs font-black uppercase tracking-[1px] text-[#2c1a0e] mb-2">
-                      {t.order.table}
-                    </span>
-                    <input
-                      inputMode="numeric"
-                      value={table}
-                      onChange={(event) => updateTable(event.target.value)}
-                      placeholder={t.order.tableHint}
-                      className={`w-full rounded-xl border-2 bg-white px-4 py-3 text-lg font-bold text-[#2c1a0e] outline-none ${
-                        tableError ? "border-red-400" : "border-black/10 focus:border-[#f5c200]"
-                      }`}
-                    />
-                    {tableError && <span className="block text-sm text-red-500 mt-1">{t.order.requiredTable}</span>}
-                  </label>
-
                   <label className="block">
                     <span className="block text-xs font-black uppercase tracking-[1px] text-[#2c1a0e] mb-2">
                       {t.order.comment}

@@ -22,7 +22,6 @@ const categoryIds = [
 
 export function Menu() {
   const [activeCategory, setActiveCategory] = useState<string>("all")
-  const [highlightedDish, setHighlightedDish] = useState<number | null>(null)
   const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({})
   const { locale, t } = useLocale()
   const { addItem, items } = useCart()
@@ -43,15 +42,9 @@ export function Menu() {
     )
     if (!dish) return
 
+    // Product QR links intentionally open the whole related group.
+    // This keeps the ordering flow useful for walk-up and takeaway customers.
     setActiveCategory(dish.category)
-    setHighlightedDish(dish.id)
-    window.setTimeout(() => {
-      document.getElementById(`dish-${dish.slug ?? dish.id}`)?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      })
-    }, 250)
-    window.setTimeout(() => setHighlightedDish(null), 3500)
   }, [])
 
   const filteredItems = useMemo(
@@ -115,17 +108,11 @@ export function Menu() {
           const lineKey = `${item.id}:${selectedOption?.value ?? "default"}`
           const quantityInCart =
             items.find((line) => line.key === lineKey)?.quantity ?? 0
-          const isHighlighted = highlightedDish === item.id
-
           return (
             <article
               id={`dish-${item.slug ?? item.id}`}
               key={item.id}
-              className={`scroll-mt-36 bg-white border rounded-[18px] overflow-hidden transition-all duration-300 ${
-                isHighlighted
-                  ? "border-[#c0392b] ring-4 ring-[#f5c200]/60 shadow-[0_16px_50px_rgba(192,57,43,0.25)] -translate-y-1"
-                  : "border-black/[0.07] hover:-translate-y-1.5 hover:border-[#f5c200] hover:shadow-[0_12px_40px_rgba(245,194,0,0.15)]"
-              }`}
+              className="scroll-mt-36 bg-white border rounded-[18px] overflow-hidden transition-all duration-300 border-black/[0.07] hover:-translate-y-1.5 hover:border-[#f5c200] hover:shadow-[0_12px_40px_rgba(245,194,0,0.15)]"
             >
               <div className="relative w-full h-[220px] sm:h-[185px] overflow-hidden bg-[#ead9c5]">
                 {item.imageZoom ? (

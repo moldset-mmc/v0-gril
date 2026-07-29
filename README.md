@@ -26,12 +26,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Copy `.env.example` to `.env.local` and fill the Telegram credentials. The bot must be an administrator of the private channel with permission to publish messages.
 
-Supported QR parameters:
+Supported QR patterns:
 
-- `/?table=7` — opens the menu for table 7;
-- `/?table=7&category=main` — opens the main dishes category;
-- `/?table=7&dish=frigarui-de-porc` — opens and highlights a specific dish;
-- `/?table=7&dish=45` — numeric dish IDs remain supported for previously generated links.
+- `/` — the universal QR code opens the complete menu from any point of sale;
+- `/?category=main&qr=product-frigarui-de-porc` — a QR code placed near a product opens its related menu group and keeps an internal source label;
+- `/?dish=frigarui-de-porc` — legacy product links remain supported, but now open the related group instead of a single highlighted card;
+- `/?dish=45` — numeric legacy dish IDs also open their related group.
+
+Orders are intentionally not tied to tables. The checkout works for walk-up, takeaway and seated customers alike.
 
 Social and review buttons appear only when their corresponding `NEXT_PUBLIC_*` URLs are configured.
 
