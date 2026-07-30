@@ -19,16 +19,16 @@ export const translations = {
     highlights: {
       items: [
         {
+          title: "Мясо и гриль",
+          description: "Шашлык, мититеи и колбаски — сытные блюда для быстрого заказа",
+        },
+        {
           title: "Домашняя кухня",
-          description: "Блинчики, вареники, пельмени — блюда как у мамы, приготовленные с любовью",
+          description: "Блинчики, вареники и пельмени — знакомые блюда на каждый день",
         },
         {
-          title: "Wine & Grill",
-          description: "Хорошее вино и настоящий гриль — сочетание, которое делает вечер незабываемым",
-        },
-        {
-          title: "Быстро и вкусно",
-          description: "Свежие блюда по доступным ценам — для любого случая",
+          title: "Быстрый заказ",
+          description: "Откройте всё меню, соберите заказ и отправьте его сотрудникам",
         },
       ],
     },
@@ -122,16 +122,16 @@ export const translations = {
     highlights: {
       items: [
         {
+          title: "Carne & Grill",
+          description: "Frigărui, mititei și cârnați — preparate consistente pentru o comandă rapidă",
+        },
+        {
           title: "Bucătărie casnică",
-          description: "Clătite, colțunași, pelmeni — mâncăruri ca la mama, pregătite cu dragoste",
+          description: "Clătite, colțunași și pelmeni — preparate cunoscute pentru fiecare zi",
         },
         {
-          title: "Wine & Grill",
-          description: "Vin bun și grătar adevărat — combinația care face seara de neuitat",
-        },
-        {
-          title: "Rapid și gustos",
-          description: "Mâncăruri proaspete la prețuri accesibile — pentru orice ocazie",
+          title: "Comandă rapidă",
+          description: "Deschideți tot meniul, formați comanda și trimiteți-o echipei",
         },
       ],
     },
