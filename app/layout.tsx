@@ -8,7 +8,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Wine & Grill — QR-меню и быстрый заказ',
   description: 'Основные блюда, супы, домашняя кухня, вино и настоящий гриль. Откройте QR-меню, соберите заказ на месте или навынос и отправьте его сотрудникам.',
-  metadataBase: new URL('https://v0-gril.vercel.app'),
+  metadataBase: new URL('https://kitchenap.md'),
   icons: {
     icon: [
       {
