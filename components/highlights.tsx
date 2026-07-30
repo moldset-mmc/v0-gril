@@ -1,42 +1,103 @@
 "use client"
 
+import Image from "next/image"
 import { useLocale } from "./locale-provider"
 
-const icons = ["fork-knife", "wine", "bolt"]
+const highlightCards = [
+  {
+    category: "main",
+    image: "/images/main-grill-board.webp",
+  },
+  {
+    category: "clatite",
+    image: "/images/clatite_branza.jpg",
+  },
+  {
+    category: "all",
+    image: "/images/cheburek-board.webp",
+  },
+] as const
 
 export function Highlights() {
-  const { t } = useLocale()
+  const { locale, t } = useLocale()
+
+  const openCategory = (category: string) => {
+    const url = new URL(window.location.href)
+    if (category === "all") url.searchParams.delete("category")
+    else url.searchParams.set("category", category)
+    url.searchParams.delete("dish")
+    url.hash = "menu"
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`)
+
+    window.dispatchEvent(
+      new CustomEvent("wine-grill:select-category", {
+        detail: { category },
+      })
+    )
+  }
 
   return (
-    <section id="highlights" className="py-20 px-6 bg-white/[0.72] backdrop-blur-[2px]">
-      <div className="max-w-[900px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-        {t.highlights.items.map((item, index) => (
-          <div key={index} className="p-6">
-            <span className="text-5xl block mb-4">
-              {index === 0 && (
-                <svg className="w-12 h-12 mx-auto text-[#c0392b]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.38a48.474 48.474 0 00-6-.37c-2.032 0-4.034.125-6 .37m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.17c0 .62-.504 1.124-1.125 1.124H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z" />
-                </svg>
-              )}
-              {index === 1 && (
-                <svg className="w-12 h-12 mx-auto text-[#c0392b]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611l-.002.001a9.041 9.041 0 01-9.267-2.48L5 14.5" />
-                </svg>
-              )}
-              {index === 2 && (
-                <svg className="w-12 h-12 mx-auto text-[#c0392b]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                </svg>
-              )}
-            </span>
-            <h3 className="text-lg font-extrabold uppercase text-[#c0392b] mb-1">
-              {item.title}
-            </h3>
-            <p className="opacity-65 text-sm leading-relaxed text-[#2c1a0e]">
-              {item.description}
-            </p>
-          </div>
-        ))}
+    <section
+      id="highlights"
+      className="bg-white/[0.76] px-4 py-12 backdrop-blur-[2px] sm:px-6 sm:py-16"
+    >
+      <div className="mx-auto max-w-[1050px]">
+        <div className="mb-6 sm:mb-8">
+          <span className="text-xs font-extrabold uppercase tracking-[3px] text-[#9a7300]">
+            {locale === "ru" ? "Быстрый выбор" : "Alegere rapidă"}
+          </span>
+          <h2 className="mt-2 text-[clamp(1.7rem,4vw,2.6rem)] font-black uppercase leading-none text-[#2c1a0e]">
+            {locale === "ru" ? "Что хочется сегодня?" : "Ce alegi astăzi?"}
+          </h2>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#2c1a0e]/60">
+            {locale === "ru"
+              ? "Откройте подходящую группу и сразу переходите к выбору блюд."
+              : "Deschideți categoria potrivită și treceți direct la alegerea preparatelor."}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
+          {t.highlights.items.map((item, index) => {
+            const card = highlightCards[index]
+            const featured = index === 0
+
+            return (
+              <button
+                type="button"
+                key={item.title}
+                onClick={() => openCategory(card.category)}
+                className={`group relative overflow-hidden rounded-3xl text-left shadow-[0_12px_35px_rgba(44,26,14,0.15)] transition duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c200] ${
+                  featured
+                    ? "col-span-2 min-h-[250px] sm:col-span-1 sm:min-h-[330px]"
+                    : "min-h-[205px] sm:min-h-[330px]"
+                }`}
+              >
+                <Image
+                  src={card.image}
+                  alt=""
+                  fill
+                  sizes={featured ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 50vw, 33vw"}
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/5" />
+                <span className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-6">
+                  <span className="block text-[0.62rem] font-bold uppercase tracking-[2px] text-[#f5c200]">
+                    {locale === "ru" ? "Открыть раздел" : "Deschide categoria"}
+                  </span>
+                  <span className="mt-1 block text-lg font-black uppercase leading-tight sm:text-2xl">
+                    {item.title}
+                  </span>
+                  <span className="mt-2 hidden max-w-[28ch] text-sm leading-relaxed text-white/75 sm:block">
+                    {item.description}
+                  </span>
+                  <span className="mt-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#f5c200] text-lg font-black text-[#2c1a0e]">
+                    →
+                  </span>
+                </span>
+              </button>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
