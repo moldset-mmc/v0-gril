@@ -9,7 +9,7 @@ const highlightCards = [
     image: "/images/main-grill-board.webp",
   },
   {
-    category: "clatite",
+    category: "homemade",
     image: "/images/clatite_branza.jpg",
   },
   {
