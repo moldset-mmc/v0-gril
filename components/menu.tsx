@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { useLocale } from "./locale-provider"
 import { menuItems, type MenuItem, type MenuOption } from "@/lib/translations"
@@ -149,6 +149,8 @@ function DishVisual({
 export function Menu() {
   const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({})
   const [selectedDish, setSelectedDish] = useState<MenuItem | null>(null)
+  const dishDialogRef = useRef<HTMLElement>(null)
+  const dishTriggerRef = useRef<HTMLElement | null>(null)
   const { locale, t } = useLocale()
   const { addItem, items } = useCart()
 
@@ -204,15 +206,42 @@ export function Menu() {
 
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
+    dishTriggerRef.current = document.activeElement as HTMLElement | null
+
+    const focusDialog = window.requestAnimationFrame(() => {
+      dishDialogRef.current
+        ?.querySelector<HTMLElement>("button, select, [href], [tabindex]:not([tabindex='-1'])")
+        ?.focus()
+    })
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setSelectedDish(null)
+      if (event.key !== "Tab" || !dishDialogRef.current) return
+
+      const focusable = Array.from(
+        dishDialogRef.current.querySelectorAll<HTMLElement>(
+          "button:not([disabled]), select:not([disabled]), [href], [tabindex]:not([tabindex='-1'])"
+        )
+      )
+      if (!focusable.length) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown)
     return () => {
+      window.cancelAnimationFrame(focusDialog)
       document.body.style.overflow = previousOverflow
       window.removeEventListener("keydown", handleKeyDown)
+      dishTriggerRef.current?.focus()
     }
   }, [selectedDish])
 
@@ -342,6 +371,7 @@ export function Menu() {
             aria-label={locale === "ru" ? "Закрыть блюдо" : "Închide preparatul"}
           />
           <article
+            ref={dishDialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="dish-dialog-title"
