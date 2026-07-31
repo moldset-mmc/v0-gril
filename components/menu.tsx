@@ -235,7 +235,7 @@ export function Menu() {
   return (
     <section
       id="menu"
-      className="bg-white/[0.72] px-3 py-14 backdrop-blur-[2px] sm:px-6 sm:py-20"
+      className="bg-white/[0.72] px-3 py-14 sm:px-6 sm:py-20"
     >
       <div className="mb-10 text-center sm:mb-14">
         <span className="mb-3 inline-block rounded-full bg-[#f5c200] px-4 py-1 text-xs font-extrabold uppercase tracking-[3px] text-[#2c1a0e]">
