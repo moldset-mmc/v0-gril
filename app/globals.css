@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --navbar-offset: 64px;
   --yellow: #f5c200;
   --red: #c0392b;
   --dark: #2c1a0e;
@@ -109,7 +110,13 @@ html {
 }
 
 section[id] {
-  scroll-margin-top: 64px;
+  scroll-margin-top: var(--navbar-offset);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --navbar-offset: 68px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
