@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { useLocale } from "./locale-provider"
 import { menuItems, type MenuItem, type MenuOption } from "@/lib/translations"
@@ -51,8 +51,6 @@ const menuGroups = [
 
 type GroupId = (typeof menuGroups)[number]["id"]
 
-const NAVBAR_OFFSET = 64
-
 function resolveGroupId(category?: string | null): GroupId | null {
   if (!category) return null
 
@@ -74,7 +72,18 @@ function scrollToMenuGroup(
   )
   if (!target) return
 
-  const top = window.scrollY + target.getBoundingClientRect().top - NAVBAR_OFFSET
+  const navbarHeight = document.querySelector("nav")?.getBoundingClientRect().height ?? 64
+  const top = window.scrollY + target.getBoundingClientRect().top - navbarHeight
+
+  if (behavior === "auto") {
+    const root = document.documentElement
+    const previousScrollBehavior = root.style.scrollBehavior
+    root.style.scrollBehavior = "auto"
+    window.scrollTo({ top: Math.max(0, top), behavior: "auto" })
+    root.style.scrollBehavior = previousScrollBehavior
+    return
+  }
+
   window.scrollTo({ top: Math.max(0, top), behavior })
 }
 
@@ -140,11 +149,15 @@ function DishVisual({
 export function Menu() {
   const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({})
   const [selectedDish, setSelectedDish] = useState<MenuItem | null>(null)
+  const dishDialogRef = useRef<HTMLElement>(null)
+  const dishTriggerRef = useRef<HTMLElement | null>(null)
   const { locale, t } = useLocale()
   const { addItem, items } = useCart()
 
   useEffect(() => {
-    const openRequestedGroup = () => {
+    let cancelled = false
+
+    const openRequestedGroup = async () => {
       const params = new URLSearchParams(window.location.search)
       const requestedCategory = params.get("category")
       const requestedDish = params.get("dish")
@@ -160,12 +173,13 @@ export function Menu() {
 
       if (!groupId) return
 
+      await document.fonts.ready
       window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => scrollToMenuGroup(groupId, "auto"))
+        if (!cancelled) scrollToMenuGroup(groupId, "auto")
       })
     }
 
-    openRequestedGroup()
+    void openRequestedGroup()
 
     const handleCategoryEvent = (event: Event) => {
       const customEvent = event as CustomEvent<{ category?: string }>
@@ -181,8 +195,10 @@ export function Menu() {
     }
 
     window.addEventListener("wine-grill:select-category", handleCategoryEvent)
-    return () =>
+    return () => {
+      cancelled = true
       window.removeEventListener("wine-grill:select-category", handleCategoryEvent)
+    }
   }, [])
 
   useEffect(() => {
@@ -190,15 +206,42 @@ export function Menu() {
 
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
+    dishTriggerRef.current = document.activeElement as HTMLElement | null
+
+    const focusDialog = window.requestAnimationFrame(() => {
+      dishDialogRef.current
+        ?.querySelector<HTMLElement>("button, select, [href], [tabindex]:not([tabindex='-1'])")
+        ?.focus()
+    })
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setSelectedDish(null)
+      if (event.key !== "Tab" || !dishDialogRef.current) return
+
+      const focusable = Array.from(
+        dishDialogRef.current.querySelectorAll<HTMLElement>(
+          "button:not([disabled]), select:not([disabled]), [href], [tabindex]:not([tabindex='-1'])"
+        )
+      )
+      if (!focusable.length) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown)
     return () => {
+      window.cancelAnimationFrame(focusDialog)
       document.body.style.overflow = previousOverflow
       window.removeEventListener("keydown", handleKeyDown)
+      dishTriggerRef.current?.focus()
     }
   }, [selectedDish])
 
@@ -221,7 +264,7 @@ export function Menu() {
   return (
     <section
       id="menu"
-      className="bg-white/[0.72] px-3 py-14 backdrop-blur-[2px] sm:px-6 sm:py-20"
+      className="bg-white/[0.72] px-3 py-14 sm:px-6 sm:py-20"
     >
       <div className="mb-10 text-center sm:mb-14">
         <span className="mb-3 inline-block rounded-full bg-[#f5c200] px-4 py-1 text-xs font-extrabold uppercase tracking-[3px] text-[#2c1a0e]">
@@ -328,6 +371,7 @@ export function Menu() {
             aria-label={locale === "ru" ? "Закрыть блюдо" : "Închide preparatul"}
           />
           <article
+            ref={dishDialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="dish-dialog-title"

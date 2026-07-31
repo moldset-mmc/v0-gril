@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useCart } from "@/lib/cart-context"
 import { reviewUrl, socialLinks } from "@/lib/site-config"
 import { useLocale } from "./locale-provider"
@@ -27,6 +27,8 @@ export function CartSheet() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
   const [orderId, setOrderId] = useState("")
   const [shareNotice, setShareNotice] = useState(false)
+  const cartDialogRef = useRef<HTMLElement>(null)
+  const cartTriggerRef = useRef<HTMLElement | null>(null)
 
   const cartSignature = useMemo(
     () =>
@@ -47,6 +49,50 @@ export function CartSheet() {
     localStorage.setItem(CHECKOUT_KEY_STORAGE, createIdempotencyKey())
     if (status !== "sending") setStatus("idle")
   }, [cartSignature, status])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    cartTriggerRef.current = document.activeElement as HTMLElement | null
+    document.body.style.overflow = "hidden"
+
+    const focusDialog = window.requestAnimationFrame(() => {
+      cartDialogRef.current
+        ?.querySelector<HTMLElement>("button, textarea, [href], [tabindex]:not([tabindex='-1'])")
+        ?.focus()
+    })
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false)
+      if (event.key !== "Tab" || !cartDialogRef.current) return
+
+      const focusable = Array.from(
+        cartDialogRef.current.querySelectorAll<HTMLElement>(
+          "button:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex='-1'])"
+        )
+      )
+      if (!focusable.length) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      window.cancelAnimationFrame(focusDialog)
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener("keydown", handleKeyDown)
+      cartTriggerRef.current?.focus()
+    }
+  }, [isOpen, setIsOpen])
 
   if (!isOpen) return null
 
@@ -125,10 +171,11 @@ export function CartSheet() {
       <button
         className="absolute inset-0 bg-black/65 backdrop-blur-[3px]"
         onClick={() => setIsOpen(false)}
-        aria-label="Close"
+        aria-label={locale === "ru" ? "Закрыть корзину" : "Închide coșul"}
       />
 
       <section
+        ref={cartDialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="cart-title"
@@ -144,7 +191,7 @@ export function CartSheet() {
           <button
             onClick={() => setIsOpen(false)}
             className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-all text-2xl font-bold leading-none"
-            aria-label="Close"
+            aria-label={locale === "ru" ? "Закрыть корзину" : "Închide coșul"}
           >
             ×
           </button>
