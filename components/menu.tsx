@@ -51,8 +51,6 @@ const menuGroups = [
 
 type GroupId = (typeof menuGroups)[number]["id"]
 
-const NAVBAR_OFFSET = 64
-
 function resolveGroupId(category?: string | null): GroupId | null {
   if (!category) return null
 
@@ -74,7 +72,8 @@ function scrollToMenuGroup(
   )
   if (!target) return
 
-  const top = window.scrollY + target.getBoundingClientRect().top - NAVBAR_OFFSET
+  const navbarHeight = document.querySelector("nav")?.getBoundingClientRect().height ?? 64
+  const top = window.scrollY + target.getBoundingClientRect().top - navbarHeight
   window.scrollTo({ top: Math.max(0, top), behavior })
 }
 
@@ -144,7 +143,9 @@ export function Menu() {
   const { addItem, items } = useCart()
 
   useEffect(() => {
-    const openRequestedGroup = () => {
+    let cancelled = false
+
+    const openRequestedGroup = async () => {
       const params = new URLSearchParams(window.location.search)
       const requestedCategory = params.get("category")
       const requestedDish = params.get("dish")
@@ -160,12 +161,13 @@ export function Menu() {
 
       if (!groupId) return
 
+      await document.fonts.ready
       window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => scrollToMenuGroup(groupId, "auto"))
+        if (!cancelled) scrollToMenuGroup(groupId, "auto")
       })
     }
 
-    openRequestedGroup()
+    void openRequestedGroup()
 
     const handleCategoryEvent = (event: Event) => {
       const customEvent = event as CustomEvent<{ category?: string }>
@@ -181,8 +183,10 @@ export function Menu() {
     }
 
     window.addEventListener("wine-grill:select-category", handleCategoryEvent)
-    return () =>
+    return () => {
+      cancelled = true
       window.removeEventListener("wine-grill:select-category", handleCategoryEvent)
+    }
   }, [])
 
   useEffect(() => {

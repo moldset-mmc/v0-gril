@@ -20,31 +20,31 @@ const qrCodes = [
     id: "main",
     title: "Мясо и гриль",
     subtitle: "Carne & Grill",
-    href: "https://kitchenap.md/?category=main&qr=group-main#menu-group-main",
+    href: "https://kitchenap.md/?category=main&qr=group-main",
   },
   {
     id: "soups",
     title: "Супы",
     subtitle: "Supe",
-    href: "https://kitchenap.md/?category=soups&qr=group-soups#menu-group-soups",
+    href: "https://kitchenap.md/?category=soups&qr=group-soups",
   },
   {
     id: "homemade",
     title: "Домашняя кухня",
     subtitle: "Bucătărie de casă",
-    href: "https://kitchenap.md/?category=homemade&qr=group-homemade#menu-group-homemade",
+    href: "https://kitchenap.md/?category=homemade&qr=group-homemade",
   },
   {
     id: "sides",
     title: "Гарниры и закуски",
     subtitle: "Garnituri și gustări",
-    href: "https://kitchenap.md/?category=sides&qr=group-sides#menu-group-sides",
+    href: "https://kitchenap.md/?category=sides&qr=group-sides",
   },
   {
     id: "drinks",
     title: "Напитки",
     subtitle: "Băuturi",
-    href: "https://kitchenap.md/?category=drinks&qr=group-drinks#menu-group-drinks",
+    href: "https://kitchenap.md/?category=drinks&qr=group-drinks",
   },
 ] as const
 
