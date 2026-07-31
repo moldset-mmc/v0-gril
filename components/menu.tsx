@@ -74,6 +74,16 @@ function scrollToMenuGroup(
 
   const navbarHeight = document.querySelector("nav")?.getBoundingClientRect().height ?? 64
   const top = window.scrollY + target.getBoundingClientRect().top - navbarHeight
+
+  if (behavior === "auto") {
+    const root = document.documentElement
+    const previousScrollBehavior = root.style.scrollBehavior
+    root.style.scrollBehavior = "auto"
+    window.scrollTo({ top: Math.max(0, top), behavior: "auto" })
+    root.style.scrollBehavior = previousScrollBehavior
+    return
+  }
+
   window.scrollTo({ top: Math.max(0, top), behavior })
 }
 
