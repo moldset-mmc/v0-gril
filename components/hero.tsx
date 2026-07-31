@@ -33,10 +33,11 @@ export function Hero() {
       <div className="relative z-[2] p-8">
         <div className="w-40 h-40 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[#f5c200] animate-pulse-glow">
           <Image
-            src="/images/logo.png"
+            src="/images/logo-mark.webp"
             alt="Wine & Grill"
             width={160}
             height={160}
+            preload
             className="w-full h-full object-cover object-[center_5%]"
           />
         </div>

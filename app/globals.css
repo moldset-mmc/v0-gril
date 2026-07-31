@@ -106,7 +106,6 @@
 /* Stable anchor alignment and accessible motion */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 64px;
 }
 
 section[id] {
