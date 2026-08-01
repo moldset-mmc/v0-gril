@@ -51,14 +51,6 @@ export function Navbar() {
           </li>
           <li>
             <Link
-              href="#atmosphere"
-              className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
-            >
-              {t.nav.atmosphere}
-            </Link>
-          </li>
-          <li>
-            <Link
               href="#contact"
               className="text-white/70 no-underline text-sm font-semibold uppercase tracking-[1px] hover:text-[#f5c200] transition-colors"
             >

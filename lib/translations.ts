@@ -215,6 +215,7 @@ export interface MenuItem {
   category: string
   categoryLabel: { ru: string; ro: string }
   name: { ru: string; ro: string }
+  description?: { ru: string; ro: string }
   price: number
   weight: string
   image: string
@@ -240,11 +241,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Шашлык свиной", ro: "Frigărui de porc" },
+    description: {
+      ru: "Свиной шашлык с запечённым картофелем, капустным салатом, зелёным горошком и соусом.",
+      ro: "Frigărui de porc cu cartofi copți, salată de varză, mazăre verde și sos.",
+    },
     price: 150,
     weight: "600г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 220,
-    imagePosition: "0% 0%",
+    image: "/images/frigarui-porc.webp",
   },
   {
     id: 38,
@@ -252,11 +255,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Шашлык куриный", ro: "Frigărui de pui" },
+    description: {
+      ru: "Куриный шашлык с запечённым картофелем, капустным салатом, зелёным горошком и соусом.",
+      ro: "Frigărui de pui cu cartofi copți, salată de varză, mazăre verde și sos.",
+    },
     price: 140,
     weight: "600г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 220,
-    imagePosition: "100% 0%",
+    image: "/images/frigarui-pui.webp",
   },
   {
     id: 39,
@@ -264,11 +269,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Колбаски куриные", ro: "Cârnați de pui" },
+    description: {
+      ru: "Куриные колбаски с запечённым картофелем, капустным салатом, зелёным горошком и соусом.",
+      ro: "Cârnați de pui cu cartofi copți, salată de varză, mazăre verde și sos.",
+    },
     price: 110,
     weight: "600г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 220,
-    imagePosition: "0% 30%",
+    image: "/images/carnati-pui.webp",
   },
   {
     id: 40,
@@ -276,11 +283,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Колбаски свиные", ro: "Cârnați de porc" },
+    description: {
+      ru: "Свиные колбаски с запечённым картофелем, капустным салатом, зелёным горошком и соусом.",
+      ro: "Cârnați de porc cu cartofi copți, salată de varză, mazăre verde și sos.",
+    },
     price: 120,
     weight: "600г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 220,
-    imagePosition: "100% 30%",
+    image: "/images/carnati-porc.webp",
   },
   {
     id: 41,
@@ -288,11 +297,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Мититеи", ro: "Mititei" },
+    description: {
+      ru: "Мититеи с запечённым картофелем, капустным салатом, зелёным горошком и соусом.",
+      ro: "Mititei cu cartofi copți, salată de varză, mazăre verde și sos.",
+    },
     price: 110,
     weight: "550г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 210,
-    imagePosition: "50% 60%",
+    image: "/images/mititei.webp",
   },
   {
     id: 42,
@@ -300,11 +311,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Чигири", ro: "Chighiri" },
+    description: {
+      ru: "Два чигири с мамалыгой и соусом — полноценная горячая порция.",
+      ro: "Două chighiri cu mămăligă și sos — o porție caldă completă.",
+    },
     price: 110,
     weight: "550г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 220,
-    imagePosition: "0% 92%",
+    image: "/images/chighiri.webp",
   },
   {
     id: 43,
@@ -312,11 +325,13 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Мясо и гриль", ro: "Carne & Grill" },
     name: { ru: "Купаты", ro: "Cupați" },
+    description: {
+      ru: "Купаты с картофелем фри, свежим салатом и белым соусом.",
+      ro: "Cupați cu cartofi prăjiți, salată proaspătă și sos alb.",
+    },
     price: 95,
     weight: "400г",
-    image: "/images/main-grill-board.webp",
-    imageZoom: 220,
-    imagePosition: "100% 92%",
+    image: "/images/cupati.webp",
   },
   {
     id: 44,
@@ -324,6 +339,10 @@ export const menuItems: MenuItem[] = [
     category: "main",
     categoryLabel: { ru: "Чебуреки", ro: "Cheburek" },
     name: { ru: "Чебурек", ro: "Cheburek" },
+    description: {
+      ru: "Хрустящий чебурек. Выберите одну из пяти начинок перед добавлением в заказ.",
+      ro: "Cheburek crocant. Alegeți una dintre cele cinci umpluturi înainte de a-l adăuga în comandă.",
+    },
     price: 50,
     weight: "1 шт.",
     image: "/images/cheburek-board.webp",
@@ -343,11 +362,13 @@ export const menuItems: MenuItem[] = [
     category: "soups",
     categoryLabel: { ru: "Супы", ro: "Supe" },
     name: { ru: "Борщ", ro: "Borș" },
+    description: {
+      ru: "Горячий борщ с насыщенным овощным бульоном, свёклой, мясом и зеленью.",
+      ro: "Borș cald cu bulion bogat de legume, sfeclă, carne și verdeață.",
+    },
     price: 60,
     weight: "400г",
-    image: "/images/soups-board.webp",
-    imageZoom: 170,
-    imagePosition: "50% 3%",
+    image: "/images/bors.webp",
   },
   {
     id: 46,
@@ -355,11 +376,13 @@ export const menuItems: MenuItem[] = [
     category: "soups",
     categoryLabel: { ru: "Супы", ro: "Supe" },
     name: { ru: "Зама", ro: "Zeamă" },
+    description: {
+      ru: "Лёгкая горячая зама с курицей, овощами, домашней лапшой и зеленью.",
+      ro: "Zeamă caldă și ușoară cu pui, legume, tăiței de casă și verdeață.",
+    },
     price: 50,
     weight: "450г",
-    image: "/images/soups-board.webp",
-    imageZoom: 170,
-    imagePosition: "50% 48%",
+    image: "/images/zeama.webp",
   },
   {
     id: 47,
@@ -367,11 +390,13 @@ export const menuItems: MenuItem[] = [
     category: "soups",
     categoryLabel: { ru: "Супы", ro: "Supe" },
     name: { ru: "Солянка", ro: "Soleancă" },
+    description: {
+      ru: "Насыщенная солянка с мясными ингредиентами, маслинами, лимоном и зеленью.",
+      ro: "Soleancă bogată cu ingrediente din carne, măsline, lămâie și verdeață.",
+    },
     price: 70,
     weight: "350г",
-    image: "/images/soups-board.webp",
-    imageZoom: 170,
-    imagePosition: "50% 92%",
+    image: "/images/soleanca.webp",
   },
 
   // Clătite / Блинчики
@@ -536,15 +561,6 @@ export const menuItems: MenuItem[] = [
     price: 50,
     weight: "0.5л · 4.5%",
     image: "/images/gotter_pilsner.jpg",
-  },
-  {
-    id: 18,
-    category: "beer",
-    categoryLabel: { ru: "Пиво нефильтрованное", ro: "Bere nefiltrată" },
-    name: { ru: "Pilsner Nefiltrată", ro: "Pilsner Nefiltrată" },
-    price: 50,
-    weight: "0.5л · 4.5%",
-    image: "/images/gotter_pilsner_nef.jpg",
   },
   {
     id: 19,

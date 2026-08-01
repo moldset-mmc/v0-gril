@@ -76,7 +76,7 @@ export function Highlights() {
                   src={card.image}
                   alt=""
                   fill
-                  sizes={featured ? "(max-width: 640px) 100vw, 33vw" : "(max-width: 640px) 50vw, 33vw"}
+                  sizes={featured ? "(max-width: 640px) 95vw, 33vw" : "(max-width: 640px) 47vw, 33vw"}
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/5" />
