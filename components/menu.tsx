@@ -124,9 +124,9 @@ function DishVisual({
         sizes={
           compact
             ? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            : "(max-width: 640px) 100vw, 560px"
+            : "(max-width: 640px) 95vw, 560px"
         }
-        className="object-contain"
+        className="object-cover"
       />
     )
   }
@@ -399,12 +399,15 @@ export function Menu() {
               >
                 {selectedDish.name[locale]}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#2c1a0e]/65">
-                {locale === "ru" ? "Порция" : "Porție"}: {selectedDish.weight}.{" "}
-                {locale === "ru"
-                  ? "Выберите вариант, если он доступен, и добавьте блюдо в заказ."
-                  : "Alegeți varianta, dacă este disponibilă, și adăugați preparatul în comandă."}
+              <p className="mt-3 text-sm leading-relaxed text-[#2c1a0e]/70">
+                {selectedDish.description?.[locale] ??
+                  (locale === "ru"
+                    ? "Откройте карточку, проверьте порцию и добавьте выбранное блюдо в заказ."
+                    : "Deschideți fișa, verificați porția și adăugați preparatul ales în comandă.")}
               </p>
+              <div className="mt-4 inline-flex items-center rounded-full border border-[#2c1a0e]/10 bg-[#fff9e9] px-3 py-1.5 text-xs font-bold text-[#2c1a0e]/70">
+                {locale === "ru" ? "Порция" : "Porție"}: {selectedDish.weight}
+              </div>
 
               {selectedDish.options && (
                 <label className="mt-5 block">
